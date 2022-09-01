@@ -3,6 +3,7 @@ package _rpc
 import (
 	"context"
 	"crypto/ecdsa"
+	"encoding/json"
 	"fmt"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -201,4 +202,14 @@ func TestProviderClient_GetTransactionByHash(t *testing.T) {
 		t.Fatal(err)
 	}
 	fmt.Println(msg.From().Hex())
+}
+
+func TestProviderClient_GetTransactionByHash2(t *testing.T) {
+	cli, _ := NewClient("http://tf-dex-preview-validator-nlb-6fd109ac8b9d390a.elb.ap-northeast-1.amazonaws.com:8545")
+	oTx, _, _ := cli.GetTransactionByHash("0xb17e5e0f5ba1943df54a0f0acc861c4f42df1e628deccc0150afb36a8fcfb663")
+	fmt.Println(oTx.To().Hex())
+	txInfo, _ := cli.GetTransactionReceipt("0xb17e5e0f5ba1943df54a0f0acc861c4f42df1e628deccc0150afb36a8fcfb663")
+	infoBytes, _ := json.Marshal(txInfo)
+	fmt.Println(string(infoBytes))
+	fmt.Println(string(common.FromHex("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000d494e56414c49445f494e50555400000000000000000000000000000000000000")))
 }
