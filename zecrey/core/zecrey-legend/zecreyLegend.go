@@ -69,3 +69,23 @@ func RevertBlocks(
 	}
 	return tx.Hash().String(), nil
 }
+
+func RegisterZNS(
+	cli *_rpc.ProviderClient, authCli *_rpc.AuthClient, instance *ZecreyLegend, oracleInstance *StablePriceOracle,
+	gasPrice *big.Int, gasLimit uint64,
+	name string, ownerAddr common.Address, pkX [32]byte, pkY [32]byte,
+) (txHash string, err error) {
+	amount, err := Price(oracleInstance, name)
+	if err != nil {
+		return "", err
+	}
+	transactOpts, err := ConstructTransactOptsWithValue(cli, authCli, gasPrice, gasLimit, amount.Int64())
+	if err != nil {
+		return "", err
+	}
+	tx, err := instance.RegisterZNS(transactOpts, name, ownerAddr, pkX, pkY)
+	if err != nil {
+		return "", err
+	}
+	return tx.Hash().String(), nil
+}
