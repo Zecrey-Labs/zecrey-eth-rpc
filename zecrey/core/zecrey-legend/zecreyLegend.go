@@ -3,11 +3,12 @@ package zecreyLegend
 import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/zecrey-labs/zecrey-eth-rpc/_rpc"
+	"github.com/zecrey-labs/zecrey-eth-rpc/zecrey/core"
 	"math/big"
 )
 
 /*
-	LoadZecreyLegendInstance: load zecrey legend instance if it is already deployed
+LoadZecreyLegendInstance: load zecrey legend instance if it is already deployed
 */
 func LoadZecreyLegendInstance(cli *_rpc.ProviderClient, addr string) (instance *ZecreyLegend, err error) {
 	instance, err = NewZecreyLegend(common.HexToAddress(addr), *cli)
@@ -15,14 +16,14 @@ func LoadZecreyLegendInstance(cli *_rpc.ProviderClient, addr string) (instance *
 }
 
 /*
-	CommitBlocks: commit blocks
+CommitBlocks: commit blocks
 */
 func CommitBlocks(
 	cli *_rpc.ProviderClient, authCli *_rpc.AuthClient, instance *ZecreyLegend,
 	lastBlock StorageStoredBlockInfo, commitBlocksInfo []OldZecreyLegendCommitBlockInfo,
 	gasPrice *big.Int, gasLimit uint64,
 ) (txHash string, err error) {
-	transactOpts, err := ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
+	transactOpts, err := core.ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
 	if err != nil {
 		return "", err
 	}
@@ -35,14 +36,14 @@ func CommitBlocks(
 }
 
 /*
-	VerifyAndExecuteBlocks: verify and execute blocks
+VerifyAndExecuteBlocks: verify and execute blocks
 */
 func VerifyAndExecuteBlocks(
 	cli *_rpc.ProviderClient, authCli *_rpc.AuthClient, instance *ZecreyLegend,
 	verifyAndExecuteBlocksInfo []OldZecreyLegendVerifyAndExecuteBlockInfo, proofs []*big.Int,
 	gasPrice *big.Int, gasLimit uint64,
 ) (txHash string, err error) {
-	transactOpts, err := ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
+	transactOpts, err := core.ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
 	if err != nil {
 		return "", err
 	}
@@ -59,7 +60,7 @@ func RevertBlocks(
 	revertBlocks []StorageStoredBlockInfo,
 	gasPrice *big.Int, gasLimit uint64,
 ) (txHash string, err error) {
-	transactOpts, err := ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
+	transactOpts, err := core.ConstructTransactOpts(cli, authCli, gasPrice, gasLimit)
 	if err != nil {
 		return "", err
 	}
@@ -79,7 +80,7 @@ func RegisterZNS(
 	if err != nil {
 		return "", err
 	}
-	transactOpts, err := ConstructTransactOptsWithValue(cli, authCli, gasPrice, gasLimit, amount.Int64())
+	transactOpts, err := core.ConstructTransactOptsWithValue(cli, authCli, gasPrice, gasLimit, amount.Int64())
 	if err != nil {
 		return "", err
 	}

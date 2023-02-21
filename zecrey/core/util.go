@@ -1,4 +1,4 @@
-package zecreyLegend
+package core
 
 import (
 	"errors"
@@ -23,7 +23,6 @@ func ConstructTransactOpts(cli *_rpc.ProviderClient, authCli *_rpc.AuthClient, g
 	transactOpts.Value = big.NewInt(0)
 	return transactOpts, nil
 }
-
 
 func ConstructTransactOptsWithValue(cli *_rpc.ProviderClient, authCli *_rpc.AuthClient, gasPrice *big.Int, gasLimit uint64, value int64) (transactOpts *bind.TransactOpts, err error) {
 	transactOpts, err = bind.NewKeyedTransactorWithChainID(authCli.PrivateKey, authCli.ChainId)
